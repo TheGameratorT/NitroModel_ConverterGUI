@@ -55,6 +55,8 @@ void ModelToNSBMD::printToConsole(const QString &text)
         ui->console_tb->setTextColor(QColor("yellow"));
 
     ui->console_tb->append(text);
+
+    QApplication::processEvents(); //Force UI update
 }
 
 void ModelToNSBMD::printAppOutputToConsole(QProcess* process)
@@ -63,13 +65,9 @@ void ModelToNSBMD::printAppOutputToConsole(QProcess* process)
     do
     {
         line = process->readLine();
-        if (line.toLower().contains("error:") || line.toLower().contains("warning:")) {
-            if(!(line.endsWith('.') or line.endsWith('!'))) {
-                printToConsole(line.trimmed() + '!');
-            }
-            else {
-                printToConsole(line.trimmed());
-            }
+        if (line.toLower().contains("error:") || line.toLower().contains("warning:"))
+        {
+            printToConsole(line.trimmed());
         }
     }
     while (!line.isNull());
@@ -82,18 +80,11 @@ void ModelToNSBMD::on_convert_pb_clicked()
     QString sourcePath = ui->path1_le->text();
     QString destinationPath = ui->path2_le->text();
 
-    bool AtLeast1PathWasNotSpecified = false;
     if(sourcePath == "")
-    {
-        AtLeast1PathWasNotSpecified = true;
         printToConsole("Error: No source model file was specified!");
-    }
     if(destinationPath == "")
-    {
-        AtLeast1PathWasNotSpecified = true;
         printToConsole("Error: No destination NSBMD path was specified!");
-    }
-    if(AtLeast1PathWasNotSpecified)
+    if(sourcePath == "" || destinationPath == "")
         return;
 
     bool IsSourceFileIMD = false;
@@ -122,6 +113,8 @@ void ModelToNSBMD::on_convert_pb_clicked()
         }
         connect(ass2imd, &QProcess::readyRead, [=](){ printAppOutputToConsole(ass2imd); });
         ass2imd->waitForFinished(-1);
+        delete ass2imd;
+        ass2imd = nullptr;
 
         if(QFile::exists(tempDir.path() + "/temp.imd"))
             printToConsole("Success: IMD generated successfully!");
@@ -139,16 +132,18 @@ void ModelToNSBMD::on_convert_pb_clicked()
     printToConsole("Starting conversion to NSBMD...");
 
     QProcess* imd2nsbmd = new QProcess();
-    imd2nsbmd->setProgram(exeDir + "/bin/imd2nsbmd/imd2nsbmd");
+    imd2nsbmd->setProgram(exeDir + "/bin/imd2bin/imd2bin");
     imd2nsbmd->setArguments({sourcePath2, "-o", destinationPath});
     imd2nsbmd->start();
     if(imd2nsbmd->state() == QProcess::NotRunning)
     {
-        printToConsole("Error: imd2nsbmd failed to start or could not be found!");
+        printToConsole("Error: imd2bin failed to start or could not be found!");
         return;
     }
     connect(imd2nsbmd, &QProcess::readyRead, [=](){ printAppOutputToConsole(imd2nsbmd); });
     imd2nsbmd->waitForFinished(-1);
+    delete imd2nsbmd;
+    imd2nsbmd = nullptr;
 
     if(QFile::exists(destinationPath))
     {

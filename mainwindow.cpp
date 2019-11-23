@@ -15,9 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ModelToNSBMD_mdiArea->addSubWindow(ModelToNSBMD_Window, Qt::FramelessWindowHint | Qt::MSWindowsFixedSizeDialogHint);
     ModelToNSBMD_Window->showMaximized();
 
-    /*TextureToNSBTX *TextureToNSBTX_Window = new TextureToNSBTX;
+    TextureToNSBTX *TextureToNSBTX_Window = new TextureToNSBTX;
     ui->TextureToNSBTX_mdiArea->addSubWindow(TextureToNSBTX_Window, Qt::FramelessWindowHint | Qt::MSWindowsFixedSizeDialogHint);
-    TextureToNSBTX_Window->showMaximized();*/
+    TextureToNSBTX_Window->showMaximized();
 
     TexturedNSBMDToNSBTX *TexturedNSBMDToNSBTX_Window = new TexturedNSBMDToNSBTX;
     ui->TexturedNSBMDToNSBTX_mdiArea->addSubWindow(TexturedNSBMDToNSBTX_Window, Qt::FramelessWindowHint | Qt::MSWindowsFixedSizeDialogHint);

@@ -52,6 +52,8 @@ void TexturedNSBMDToNSBTX::printToConsole(const QString &text)
         ui->console_tb->setTextColor(QColor("yellow"));
 
     ui->console_tb->append(text);
+
+    QApplication::processEvents(); //Force UI update
 }
 
 void TexturedNSBMDToNSBTX::on_convert_pb_clicked()

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QProcess>
+#include <QFile>
 
 namespace Ui {
 class TextureToNSBTX;
@@ -17,9 +18,11 @@ public:
     ~TextureToNSBTX();
 
 private slots:
-    void on_searchPath1_pb_clicked();
+    void on_addTexture_pb_clicked();
 
-    void on_seachPath2_pb_clicked();
+    void on_removeTexture_pb_clicked();
+
+    void on_selectNsbtxPath_pb_clicked();
 
     void on_convert_pb_clicked();
 
@@ -28,6 +31,9 @@ private:
 
     void printToConsole(const QString &text);
     void printAppOutputToConsole(QProcess* process);
+
+    void WriteOBJFile(QFile* file);
+    void WriteMTLFile(QFile* file);
 };
 
 #endif // TEXTURETONSBTX_H

@@ -32,18 +32,21 @@ SOURCES += \
         mainwindow.cpp \
         modeltonsbmd.cpp \
         texturednsbmdtonsbtx.cpp \
+        textureentry.cpp \
         texturetonsbtx.cpp
 
 HEADERS += \
         mainwindow.h \
         modeltonsbmd.h \
         texturednsbmdtonsbtx.h \
+        textureentry.h \
         texturetonsbtx.h
 
 FORMS += \
         mainwindow.ui \
         modeltonsbmd.ui \
         texturednsbmdtonsbtx.ui \
+        textureentry.ui \
         texturetonsbtx.ui
 
 # Default rules for deployment.
